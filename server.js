@@ -158,13 +158,8 @@ data: animaisEncontrados
 })
 });
 
-// Adicionar nova varinha
 
 
-// Iniciar servidor escutando na porta definida
-app.listen(serverPort, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
-});
 
 // Adicionando uma nova varinha
 
@@ -179,7 +174,6 @@ app.listen(serverPort, () => {
 // Criar nova varinha
    const novaVarinha = {
       id: varinhas.length + 1,
-      nome,
       material,
       nucleo,
       comprimento
@@ -193,3 +187,8 @@ app.listen(serverPort, () => {
         message: "Nova varinha adicionada a Hogwarts!",
         data: novaVarinha
     });
+
+    // Iniciar servidor escutando na porta definida
+app.listen(serverPort, () => {
+    console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
+});
