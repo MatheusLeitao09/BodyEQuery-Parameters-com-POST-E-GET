@@ -10,14 +10,14 @@ app.use(express.json());
 
 // Carregar variáveis de ambiente e definir constante para porta do servidor
 dotenv.config();
-const serverPort = process.env.PORT || 3001;
+const serverPort = process.env.PORT || 3000;
+
+
 
 // Rota principal GET para "/"
 app.get("/", (req, res) => {
     res.send("🚀 Servidor funcionando...");
 });
-
-
 
 
 
@@ -49,12 +49,11 @@ app.get('/bruxos', (req, res) => {
 });
 
 // Adicionar o bruxo na minha lista
-//é usar o BODY para capturar info
+// é usar o BODY para capturar info
 // mudar o nodemon para node no package
 // Verbo: POST
 
 // Body Parameters no Node.js - Criar novo bruxo
-app.use(express.json()); // Middleware obrigatório!
 
 app.post('/bruxos', (req, res) => {
     // Acessando dados do body
@@ -97,7 +96,7 @@ app.post('/bruxos', (req, res) => {
 // Filtrar por varinhas
 
 app.get('/varinhas', (req, res) => {
-    const {material, nucleo} = req.query;
+    const {material, nucleo, comprimento} = req.query;
     let varinhasEncontradas = varinhas;
 
 if (material) {
@@ -107,6 +106,10 @@ if (material) {
 if (nucleo) {
       varinhasEncontradas = varinhasEncontradas.filter(b => b.nucleo.toLowerCase().includes(nucleo.toLowerCase()));
     }
+
+if (comprimento) {
+      varinhasEncontradas = varinhasEncontradas.filter(b => b.comprimento.toLowerCase().includes(comprimento.toLowerCa()));
+}
   
 res.status(200).json({
 total: varinhasEncontradas.length,
@@ -152,6 +155,7 @@ if (nome) {
    
     }
 
+
 res.status(200).json({
 total: animaisEncontrados.length,
 data: animaisEncontrados
@@ -159,19 +163,21 @@ data: animaisEncontrados
 });
 
 
+// Adicionar uma nova varinha 
+
+app.post('/varinhas', (req, res) => {
+    const {material, nucleo, comprimento} = req.body
 
 
-// Adicionando uma nova varinha
-
-// Validação básica
+    // Validação básica
     if (!material || !nucleo || !comprimento) {
         return res.status(400).json({
             success: false,
-            message: "Material, nucleo e comprimento sao obrigatórios para adicionar uma nova varinha!"
+            message: "Material, núcleo e comprimento sao obrigatórios para adicionar uma nova varinha!"
         });
     }
 
-// Criar nova varinha
+    // Criar nova varinha
    const novaVarinha = {
       id: varinhas.length + 1,
       material,
@@ -179,7 +185,7 @@ data: animaisEncontrados
       comprimento
     };
 
-     // Adicionar à lista de varinhas
+    // Adicionar à lista de varinhas
     varinhas.push(novaVarinha);
     
     res.status(201).json({
@@ -187,8 +193,12 @@ data: animaisEncontrados
         message: "Nova varinha adicionada a Hogwarts!",
         data: novaVarinha
     });
+});
 
-    // Iniciar servidor escutando na porta definida
+
+
+// Iniciar servidor escutando na porta definida
+
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
-});
+    });
